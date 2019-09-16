@@ -1,0 +1,21 @@
+{% extends "stock/base.html"%}
+
+
+{% block content%}
+    <form method="post">
+      {% csrf_token %}
+      {%  for x in stocks %}
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input" name="checks[]" value="{{ x.Symbols }}">
+          </div>
+        </div>
+        <h2 class="form-control" aria-label="Text input with checkbox">{{ x.Name }}</h2>
+      </div>
+      {% endfor %}
+      <div class="Approve button"style="text-align: center;">  
+        <button type="submit" style="border-radius: 10px;">Approve</button>
+      </div>
+    </form> 
+{% endblock content %}

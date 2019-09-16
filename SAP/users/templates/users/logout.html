@@ -1,0 +1,10 @@
+{% extends "stock/base.html"%}
+
+{% block content%}
+<h2 style="color: aliceblue">You Have Been Logged Out!</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+             <a href="{%url 'login' %}" style="color: aliceblue"> Log In Again</a>
+        </small>
+    </div>
+{% endblock content %}

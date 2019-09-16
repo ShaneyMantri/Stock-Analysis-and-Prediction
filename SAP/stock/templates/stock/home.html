@@ -1,0 +1,32 @@
+{% extends "stock/base.html"%}
+
+{% block content%}  
+    <div style="padding: 20px;background:#ffffff; border-radius: 100px; margin: 20px;">    
+        <div class="division_for_Profile_Image" style="text-align: left; width: min-content">
+            {% if user.is_authenticated %}
+                <div>
+                    <img class="rounded-circle article-img" style="height: 150px; width:150px" src="{{ user.profile.image.url }}">
+                </div>
+                <!-- <div>
+                    <h2>{{ request.user.first_name }}</h2>
+                </div> -->
+            {% endif %}
+    </div>
+    </div>
+    {%  for x, y, z, a, b, c in combined_list %}
+        <form method="POST">
+            {% csrf_token %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                    <a class="mr-2" href="#" type="submit">{{ x }}</a>
+                    <small class="text-muted">Stock Symbol: {{ y }} </small>
+                    </div>
+                    <h2><a class="article-title" href="#">Open Price: ${{ z }} &nbsp; &nbsp; &nbsp;&nbsp;Close Price: ${{ a }}</a></h2>
+                    <p class="article-content"> Highest: {{ b }} <br> Lowest: {{ c }}<br> Date: {{Current_date_time |date:"F d, Y"}}</p>
+                    <button type="submit" style="border-radius: 10px; color: whitesmoke;background: green; float: right;" name="graphbutton" value="{{ y }}">Get Graph</button>
+                </div>
+            </article>
+        </form>
+    {% endfor %}
+{% endblock content %}
