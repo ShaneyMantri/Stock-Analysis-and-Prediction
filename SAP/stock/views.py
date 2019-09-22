@@ -1,21 +1,22 @@
 import datetime
 from io import BytesIO
+
 import PIL
 import PIL.Image
+import plotly.graph_objs as go
+import plotly.offline as opy
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from matplotlib import pylab
 from pylab import *
 
+from .getpriceforgraph import get_price
+from .graphplot import plotgraph
 from .models import Company
 from .Symbol_to_company import get_full_name
 from .yf import Obtain_price
-from .getpriceforgraph import get_price
-from .graphplot import plotgraph
-
-
-
 #GLOBAL
 selected_companies = []
 selected_companies_name_list = []
@@ -25,7 +26,7 @@ highest = []
 lowest = []
 
 
-
+@login_required
 def home(request):
     global selected_companies, selected_companies_name_list, openpricelist, closepricelist, highest, lowest
     
@@ -61,12 +62,10 @@ def home(request):
     if request.method == 'POST':
         plotgraph(request.POST.get('graphbutton'))
 
-
-
     return render(request, "stock/home.html", context)
 
 
-
+@login_required
 def checkbox(request):
     global selected_companies
     selected_companies.clear()
@@ -90,29 +89,3 @@ def about(request):
     return render(request, "stock/about.html" , {"title" : "About"})
 
 
-# def getimage(symbol):
-#     # Construct the graph
-
-#     x, y = get_price(symbol)
-#     scatter(x, y, label= "dots", color= "blue",  marker= ".", s=30)
-#     print(x,y)
-#     xlabel('Epoch Time')
-#     ylabel('Price')
-#     title('Stock Trend')
-#     # grid(True)
-
-#     # # Store image in a string buffer
-#     # buffer = StringIO()
-#     # canvas = pylab.get_current_fig_manager().canvas
-#     # canvas.draw()
-#     # pilImage = PIL.Image.fromstring("RGB", canvas.get_width_height(), canvas.tostring_rgb())
-#     # pilImage.save(buffer, "PNG")
-#     # pylab.close()
-#     buffer = BytesIO()
-#     canvas = pylab.get_current_fig_manager().canvas
-#     canvas.draw()
-#     graphIMG = PIL.Image.frombytes('RGB', canvas.get_width_height(), canvas.tostring_rgb())
-#     graphIMG.save(buffer, "PNG")
-#     pylab.close()
-#     # Send buffer in a http response the the browser with the mime type image/png set
-#     return HttpResponse(buffer.getvalue(), mimetype="image/png")

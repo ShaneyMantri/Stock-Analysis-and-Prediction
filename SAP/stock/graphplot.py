@@ -28,7 +28,6 @@ def plotgraph(symbol):
     tempopenrate = symbol_data['open']
     openrate = [round(x,2) for x in tempopenrate]
 
-
     plt.scatter(datelist, openrate, label= "dots", color= "green",  marker= ".", s=30) 
     plt.xlabel('Epoch Time')
     plt.ylabel('Open Rate')
