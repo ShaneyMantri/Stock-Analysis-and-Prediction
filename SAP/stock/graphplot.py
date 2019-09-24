@@ -4,7 +4,7 @@ from yahoo_finance_api2.exceptions import YahooFinanceError
 from datetime import datetime
 import matplotlib
 matplotlib.use('TkAgg')
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 import time
 
 def plotgraph(symbol):
@@ -28,14 +28,10 @@ def plotgraph(symbol):
     tempopenrate = symbol_data['open']
     openrate = [round(x,2) for x in tempopenrate]
 
-    plt.scatter(datelist, openrate, label= "dots", color= "green",  marker= ".", s=30) 
-    plt.xlabel('Epoch Time')
-    plt.ylabel('Open Rate')
-
-    plt.title("Stock Price")
-    plt.legend() 
+    plt.plot(datelist,openrate)
+    plt.ylabel("Prices")
+    plt.xlabel("Time")
     plt.show()
-  
 
 
 
