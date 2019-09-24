@@ -1,4 +1,6 @@
 import datetime
+import random
+import time
 from io import BytesIO
 
 import PIL
@@ -8,7 +10,7 @@ import plotly.offline as opy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, render_to_response
 from matplotlib import pylab
 from pylab import *
 
@@ -17,6 +19,7 @@ from .graphplot import plotgraph
 from .models import Company
 from .Symbol_to_company import get_full_name
 from .yf import Obtain_price
+
 #GLOBAL
 selected_companies = []
 selected_companies_name_list = []
@@ -24,11 +27,11 @@ openpricelist = []
 closepricelist = []
 highest = []
 lowest = []
-
+company_for_graph = None
 
 @login_required
 def home(request):
-    global selected_companies, selected_companies_name_list, openpricelist, closepricelist, highest, lowest
+    global selected_companies, selected_companies_name_list, openpricelist, closepricelist, highest, lowest,company_for_graph
     
     if len(selected_companies) == 0:
         messages.error(request, f'No company has been selected. Please select at least one company')
@@ -61,6 +64,7 @@ def home(request):
 
     if request.method == 'POST':
         plotgraph(request.POST.get('graphbutton'))
+        # company_for_graph = request.POST.get('graphbutton')
 
     return render(request, "stock/home.html", context)
 
@@ -89,3 +93,28 @@ def about(request):
     return render(request, "stock/about.html" , {"title" : "About"})
 
 
+# def graphplot(request):
+#     global company_for_graph
+
+#     if company_for_graph is None:
+#         messages.error(request, f'No company has been selected. Please select any one company')
+#         return redirect('Stock-Home')
+    
+#     xdata, ydata1 = get_price(company_for_graph)
+#     nb_element = 50
+
+#     kwargs1 = {'shape': 'circle'}
+
+#     extra_serie1 = {"tooltip": {"y_start": "", "y_end": " balls"}}
+
+#     chartdata = {
+#         'x': xdata,
+#         'name1': 'series 1', 'y1': ydata1, 'kwargs1': kwargs1, 'extra1': extra_serie1,
+
+#     }
+#     charttype = "scatterChart"
+#     data = {
+#         'charttype': charttype,
+#         'chartdata': chartdata,
+#     }
+#     return render_to_response('scatterchart.html', data)
