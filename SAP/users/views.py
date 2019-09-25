@@ -14,6 +14,7 @@ def register(request):
             return redirect('login')
         else:
             form = UserRegisterForm()
+            messages.error(request,f'Invalid Username or password')
     return render(request, 'users/register.html', {'form': form})
 
 
