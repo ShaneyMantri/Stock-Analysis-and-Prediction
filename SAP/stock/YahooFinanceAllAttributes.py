@@ -5,7 +5,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt 
 import time
 
-def get_price(symbol):
+def Obtain_price(symbol):
     my_share = share.Share(symbol)
     symbol_data = None
 
@@ -18,23 +18,20 @@ def get_price(symbol):
         print(e.message)
         sys.exit(1)
 
-    x = symbol_data['timestamp']
-    newTime = [z / 1000 for z in x]
-    datelist = []
-    for x in newTime:
-        datelist.append(str(time.strftime('%d-%m-%Y', time.localtime(x))))
-    tempopenrate = symbol_data['open']
-    openrate = [round(x,2) for x in tempopenrate]
+    openrate = symbol_data['open']
+    closerate = symbol_data['close']
+    highest = symbol_data['high']
+    lowest = symbol_data['low']
+    
+    lastest_open_rate = openrate[len(openrate)-1]
+    latest_close_rate =  closerate[len(closerate)-1]
+    highest_price_for_today = highest[len(highest)-1]
+    lowest_price_for_today = lowest[len(lowest)-1]
+
+    return  lastest_open_rate, latest_close_rate, highest_price_for_today, lowest_price_for_today
 
 
-    # plt.scatter(newTime, y, label= "dots", color= "green",  marker= ".", s=30) 
-    # plt.xlabel('Epoch Time')
-    # plt.ylabel('Open Rate')
 
-    # plt.title("Stock Price")
-    # plt.legend() 
-    # plt.show()
-    return datelist, openrate
 
 
 

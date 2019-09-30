@@ -9,11 +9,10 @@ from django.shortcuts import redirect, render, render_to_response
 from matplotlib import pylab
 from pylab import *
 
-from .getpriceforgraph import get_price
-from .graphplot import plotgraph
+from .graphplot import plotgraph, get_price
 from .models import Company
 from .Symbol_to_company import get_full_name
-from .yf import Obtain_price
+from .YahooFinanceAllAttributes import Obtain_price
 
 #GLOBAL
 selected_companies = []
@@ -44,14 +43,6 @@ def home(request):
     combined_list = zip(selected_companies_name_list, selected_companies, openpricelist,closepricelist,highest,lowest)
 
     Current_date_time = datetime.datetime.now()
-    # context1 = {
-    #     "stocks" : selected_companies_name_list,
-    #     "title" : "Home",
-    #     "Symbols":selected_companies,
-    #     # "date": s[0],
-    #     "Current_Price": "LOL"
-    # }
-    
     context = {
         'combined_list':combined_list,
         'Current_date_time':Current_date_time
@@ -59,6 +50,7 @@ def home(request):
 
     if request.method == 'POST':
         plotgraph(request.POST.get('graphbutton'))
+        
         # company_for_graph = request.POST.get('graphbutton')
 
     return render(request, "stock/home.html", context)
@@ -87,29 +79,3 @@ def checkbox(request):
 def about(request):
     return render(request, "stock/about.html" , {"title" : "About"})
 
-
-# def graphplot(request):
-#     global company_for_graph
-
-#     if company_for_graph is None:
-#         messages.error(request, f'No company has been selected. Please select any one company')
-#         return redirect('Stock-Home')
-    
-#     xdata, ydata1 = get_price(company_for_graph)
-#     nb_element = 50
-
-#     kwargs1 = {'shape': 'circle'}
-
-#     extra_serie1 = {"tooltip": {"y_start": "", "y_end": " balls"}}
-
-#     chartdata = {
-#         'x': xdata,
-#         'name1': 'series 1', 'y1': ydata1, 'kwargs1': kwargs1, 'extra1': extra_serie1,
-
-#     }
-#     charttype = "scatterChart"
-#     data = {
-#         'charttype': charttype,
-#         'chartdata': chartdata,
-#     }
-#     return render_to_response('scatterchart.html', data)
