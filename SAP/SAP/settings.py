@@ -136,3 +136,12 @@ LOGIN_URL = 'login'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+
+#### EMAIL VERIFICATION
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'stockanalysissad@gmail.com'
+EMAIL_HOST_PASSWORD = 'SADLabProject'
+EMAIL_PORT = 587
+
