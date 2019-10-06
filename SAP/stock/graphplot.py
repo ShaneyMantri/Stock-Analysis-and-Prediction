@@ -1,7 +1,7 @@
 import sys
 import time
 from datetime import datetime
-
+import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 from yahoo_finance_api2 import share
