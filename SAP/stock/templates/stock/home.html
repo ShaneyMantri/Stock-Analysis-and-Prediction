@@ -2,14 +2,14 @@
 
 {% block content%}  
     <div style="padding: 20px;background:#ffffff; border-radius: 100px; margin: 20px;">    
-        <div class="division_for_Profile_Image" style="text-align: left; width: min-content">
+        <div class="division_for_Profile_Image" style="text-align: left; width: inherit; display: table-row">
             {% if user.is_authenticated %}
-                <div>
+                <div style="display: table-cell;">
                     <img class="rounded-circle article-img" style="height: 150px; width:150px" src="{{ user.profile.image.url }}">
                 </div>
-                <!-- <div>
-                    <h2>{{ request.user.first_name }}</h2>
-                </div> -->
+                <div style="display: table-cell; float: left;">
+                    <h2 style="display: inline-block;">{{ request.user.first_name }} {{request.user.last_name}}</h2>
+                </div>
             {% endif %}
     </div>
     </div>
@@ -25,6 +25,7 @@
                     <h2><a class="article-title" href="#">Open Price: ${{ z }} &nbsp; &nbsp; &nbsp;&nbsp;Close Price: ${{ a }}</a></h2>
                     <p class="article-content"> Highest: {{ b }} <br> Lowest: {{ c }}<br> Date: {{Current_date_time |date:"F d, Y"}}</p>
                     <button type="submit" style="border-radius: 10px; color: whitesmoke;background: green; float: right;" name="graphbutton" value="{{ y }}">Get Graph</button>
+                    <button type="submit" style="border-radius: 10px; color: whitesmoke;background: green; float: right;" name="detailsbutton" value="{{ y }}">Get Details</button>
                 </div>
             </article>
         </form>

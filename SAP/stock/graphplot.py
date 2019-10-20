@@ -16,7 +16,7 @@ def get_price(symbol):
 
     try:
         symbol_data = my_share.get_historical(share.PERIOD_TYPE_DAY,
-                                            50,
+                                            200,
                                             share.FREQUENCY_TYPE_HOUR,
                                             1)
     except YahooFinanceError as e:
@@ -54,8 +54,16 @@ def plotgraph(symbol):
         datelist.append(str(time.strftime('%d/%m', time.localtime(x))))
     tempopenrate = symbol_data['open']
     openrate = [round(x,2) for x in tempopenrate]
-
-    plt.plot(datelist,openrate)
-    plt.ylabel("Prices")
-    plt.xlabel("Time")
-    plt.show()
+    # print("DONE")
+    # print(datelist[0],datelist[len(datelist)-1])
+    len_date = len(datelist)
+    len_date = len_date//10
+    datelist_sent = []
+    # print("DONE2")
+    i = 0
+    while i < len(datelist):
+        datelist_sent.append(datelist[i])
+        i = i+len_date
+    # print("DONE3")
+    # datelist_sent.append(datelist[len(datelist)-1])
+    return datelist,openrate, datelist_sent

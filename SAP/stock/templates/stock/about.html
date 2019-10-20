@@ -1,5 +1,59 @@
-{% extends "stock/base.html"%}
+{% extends "stock/baseforgraph.html"%}
 
 {% block content%}
-    <h1 style="color: aliceblue">Stocks About</h1>
+<style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color:white;
+}
+tr:nth-child(odd){
+  background-color:white;
+
+}
+    </style>
+<!-- <form method="POST">
+    {% csrf_token %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+            <a class="mr-2" href="#" type="submit">{{ x }}</a>
+            <small class="text-muted">Stock Symbol: {{ y }} </small>
+            </div>
+            <h2><a class="article-title" href="#">Open Price: ${{ z }} &nbsp; &nbsp; &nbsp;&nbsp;Close Price: ${{ a }}</a></h2>
+            <p class="article-content"> Highest: {{ b }} <br> Lowest: {{ c }}<br> Date: {{Current_date_time |date:"F d, Y"}}</p>
+            <button type="submit" style="border-radius: 10px; color: whitesmoke;background: green; float: right;" name="graphbutton" value="{{ y }}">Get Graph</button>
+        </div>
+    </article>
+</form> -->
+<h2 style="color: white;">{{full_name}} Table - {{details_of_company}}</h2>
+<table>
+  <tr style="color: #000000;">
+    <th>Time</th>
+    <th>Open Rate</th>
+    <th>Close Rate</th>
+    <th>Highest</th>
+    <th>Lowest</th>
+  </tr>
+  {%  for x, y, z, a, b in combined_list_2 %}
+  <tr>
+    <td style="color: #000000;">{{ x }}</td>
+    <td style="color: #000000;">{{ y }}</td>
+    <td style="color: #000000;">{{ z }}</td>
+    <td style="color: #000000;">{{ a }}</td>
+    <td style="color: #000000;">{{ b }}</td>
+
+  </tr>
+  {% endfor %}
+</table>
 {% endblock content %}
