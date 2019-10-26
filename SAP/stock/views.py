@@ -22,6 +22,7 @@ from .models import Company
 from .Symbol_to_company import get_full_name
 from .YahooFinanceAllAttributes import Obtain_price
 from .unique_rows import read_unique_rows
+from .linearReg import prediction
 
 #GLOBAL
 selected_companies = []
@@ -68,8 +69,10 @@ def home(request):
         s = None   
         graph_of_company = request.POST.get('graphbutton')
         details_of_company = request.POST.get('detailsbutton')
-        if details_of_company is None:
-            t, s, xticks_var = plotgraph(graph_of_company)
+        prediction_of_company = request.POST.get('predictionbutton')
+
+        if graph_of_company is not None:
+            t, s, xticks_var, waste = plotgraph(graph_of_company)
             # print("DONE4")
             plot(t, s)
             xticks(xticks_var, rotation  = 'vertical')
@@ -94,7 +97,7 @@ def home(request):
             }
             
             return render(request, "stock/graph.html", context1)
-        else:
+        elif details_of_company is not None :
             time, openrate, closerate, high, low = read_unique_rows(details_of_company)
             full_name = get_full_name(details_of_company)
             combined_list_2 = zip(time, openrate, closerate,high,low)
@@ -103,8 +106,30 @@ def home(request):
                 'details_of_company': details_of_company,
                 'combined_list_2':combined_list_2
             }
-            print("HELLO")
+            # print("HELLO")
             return render(request, "stock/about.html",context2)
+        else:
+            mse_error, df_shape_0, all_mid_data, N, run_avg_predictions, df_date_loc = prediction(prediction_of_company)
+            figure(figsize = (20,10))
+            plot(range(df_shape_0),all_mid_data,color='b',label='Prediction')
+            plot(range(0,N),run_avg_predictions,color='orange', label='Actual')
+            xticks(range(0,df_shape_0,50),df_date_loc,rotation  = 'vertical')
+            xlabel('Date')
+            ylabel('Mid Price')
+            legend(fontsize=18)
+            title('Prediction for {}'.format(prediction_of_company))
+            grid(True)
+            tick_params(axis='x', which='minor', bottom=False)
+            buffer = None
+            buffer = BytesIO()
+            plt.savefig(buffer, format='png', dpi=500)
+            image_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8').replace('\n', '')
+            buffer.close()
+            context2 = {
+                'image_base64' : image_base64,
+                'mse_error':mse_error
+            }
+            return render(request, "stock/prediction.html", context2)
 
     return render(request, "stock/home.html", context)
 

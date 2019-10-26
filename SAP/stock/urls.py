@@ -7,5 +7,5 @@ urlpatterns = [
     path('checkbox/', views.checkbox, name = "Stock-Checkbox"),
     path('about/', views.about, name = "Stock-About"),
     # path('graph/', views.graphplot, name = 'Stock-Graph')
-
+    
 ]

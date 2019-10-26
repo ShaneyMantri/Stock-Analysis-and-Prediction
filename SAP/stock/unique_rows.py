@@ -30,8 +30,10 @@ def read_unique_rows(company_name):
     timer = list(map(int,timer))
     timedet = []
     for x in timer:
-        timedet.append(str(time.strftime('%d/%m/%Y %H:%M:%S', time.localtime(x))))
+        timedet.append(str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(x))))
     # print(time[0],type(openrate[0]),type(closerate[0]),type(high[0]),type(low[0]))
     return timedet, openrate, closerate, high, low
 
-read_unique_rows("AAPL")
+
+
+# read_unique_rows("AAPL")
