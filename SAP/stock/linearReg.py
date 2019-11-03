@@ -252,7 +252,7 @@ def pmodel(symbol):
 
 
 
-    dg = DataGeneratorSeq(train_data,5,5)
+    dg = DataGeneratorSeq(train_data,8,1)
     u_data, u_labels = dg.unroll_batches()
 
     for ui,(dat,lbl) in enumerate(zip(u_data,u_labels)):   

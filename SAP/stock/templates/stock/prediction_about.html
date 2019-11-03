@@ -1,0 +1,40 @@
+{% extends "stock/baseforgraph.html"%}
+
+{% block content%}
+<style>
+ table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color:white;
+}
+tr:nth-child(odd){
+  background-color:white;
+
+}
+    </style>
+
+<h2 style="color: white;">{{full_name}} Table - {{details_of_company}}</h2>
+<table>
+  <tr style="color: #000000;">
+    <th>Time</th>
+    <th>Highest</th>
+  </tr>
+  {%  for x, y in combined_list_2 %}
+  <tr>
+    <td style="color: #000000;">{{ x }}</td>
+    <td style="color: #000000;">{{ y }}</td>
+
+  </tr>
+  {% endfor %}
+</table>
+{% endblock content %}

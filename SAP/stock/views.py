@@ -1,12 +1,10 @@
-import matplotlib
-matplotlib.use("Agg")
-
 import base64
 import datetime
 import random
 import time
 from io import BytesIO
 
+import matplotlib
 import matplotlib.pyplot as plt
 import PIL
 import PIL.Image
@@ -17,12 +15,18 @@ from django.shortcuts import redirect, render, render_to_response
 from matplotlib import pylab
 from pylab import *
 
-from .graphplot import plotgraph, get_price
+from .graphplot import get_price, plotgraph
+from .linearReg import prediction
 from .models import Company
 from .Symbol_to_company import get_full_name
-from .YahooFinanceAllAttributes import Obtain_price
 from .unique_rows import read_unique_rows
-from .linearReg import prediction
+from .YahooFinanceAllAttributes import Obtain_price
+
+matplotlib.use("Agg")
+
+
+
+
 
 #GLOBAL
 selected_companies = []
@@ -70,7 +74,7 @@ def home(request):
         graph_of_company = request.POST.get('graphbutton')
         details_of_company = request.POST.get('detailsbutton')
         prediction_of_company = request.POST.get('predictionbutton')
-
+        Tomorrow_Pred = request.POST.get('Tomorrow_Pred')
         if graph_of_company is not None:
             t, s, xticks_var, waste = plotgraph(graph_of_company)
             # print("DONE4")
@@ -108,9 +112,10 @@ def home(request):
             }
             # print("HELLO")
             return render(request, "stock/about.html",context2)
-        else:
+        elif prediction_of_company is not None:
             mse_error, df_shape_0, all_mid_data, N, run_avg_predictions, df_date_loc = prediction(prediction_of_company)
             figure(figsize = (20,10))
+            # print(df_shape_0,all_mid_data[-8:])
             plot(range(df_shape_0),all_mid_data,color='b',label='Prediction')
             plot(range(0,N),run_avg_predictions,color='orange', label='Actual')
             xticks(range(0,df_shape_0,50),df_date_loc,rotation  = 'vertical')
@@ -118,7 +123,7 @@ def home(request):
             ylabel('Mid Price')
             legend(fontsize=18)
             title('Prediction for {}'.format(prediction_of_company))
-            grid(True)
+            # grid(True)
             tick_params(axis='x', which='minor', bottom=False)
             buffer = None
             buffer = BytesIO()
@@ -130,6 +135,31 @@ def home(request):
                 'mse_error':mse_error
             }
             return render(request, "stock/prediction.html", context2)
+        else:
+            timer, openrate, closerate, high, low = read_unique_rows(Tomorrow_Pred)
+            mse_error, df_shape_0, all_mid_data, N, run_avg_predictions, df_date_loc = prediction(Tomorrow_Pred)
+            timer.pop()
+            high.pop()
+            # high.extend(all_mid_data[-8:])
+            print(all_mid_data[-8:])
+            for i in range(8,0,-1):
+                high.append(all_mid_data[-i][0])
+            for i in range(8):
+                
+                print(i)
+                print(timer[len(timer)-1])
+                timer.append(str(datetime.date.today() + datetime.timedelta(i)))
+            print(high[-8:])
+            full_name = get_full_name(Tomorrow_Pred)
+            # time.append(datetime.date.today() + datetime.timedelta(days=8))
+            combined_list_2 = zip(timer,high)
+            context2 = {
+                'full_name':full_name,
+                'details_of_company': Tomorrow_Pred,
+                'combined_list_2':combined_list_2
+            }
+            # print("HELLO")
+            return render(request, "stock/prediction_about.html",context2)
 
     return render(request, "stock/home.html", context)
 
