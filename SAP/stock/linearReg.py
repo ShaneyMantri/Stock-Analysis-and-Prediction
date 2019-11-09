@@ -227,7 +227,7 @@ def pmodel(symbol):
                     self._cursor[b] = np.random.randint(0,(b+1)*self._segments)
 
                 batch_data[b] = self._prices[self._cursor[b]]
-                batch_labels[b]= self._prices[self._cursor[b]+np.random.randint(0,5)]
+                batch_labels[b]= self._prices[self._cursor[b]+np.random.randint(0,8)]
 
                 self._cursor[b] = (self._cursor[b]+1)%self._prices_length
 

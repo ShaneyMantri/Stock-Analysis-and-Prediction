@@ -3,8 +3,7 @@
 
 {% block content%}
     <diV class="content-section">
-        <form method="POST">
-            {% csrf_token %}
+        <form method="POST">{% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Join Today</legend>
                 {{ form | crispy }}
